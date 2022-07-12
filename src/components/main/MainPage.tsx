@@ -6,6 +6,7 @@ import { loginService } from '../../service/login.service';
 const MainPage = (): JSX.Element => {
 
     const [user, setUser] = useState<User>(new User(null, '', '', ''));
+    const [loading, setLoading] = useState<{ logInButton: boolean }>({ logInButton: false });
     const [loggedInUser, setLoggedInUser] = useState<User | null>(null);
     const [errorMessage, setErrorMessage] = useState<string>('');
 
@@ -30,13 +31,15 @@ const MainPage = (): JSX.Element => {
     }
 
     const loginHandler = async (): Promise<void> => {
+        setLoading({ logInButton: true });
         const response = await loginService.login(user);
         if (!response) {
             setErrorMessage("Invalid username or password");
-            return;
+        } else {
+            setErrorMessage('');
+            checkAndGetUser();
         }
-        setErrorMessage('');
-        checkAndGetUser();
+        setLoading({ logInButton: false });
     }
 
     return (
@@ -50,7 +53,7 @@ const MainPage = (): JSX.Element => {
                 <input type="password" name='password' onChange={(event) => inputHandler(event)} value={user.password} placeholder='Password'></input>
             </div>
             <div>
-                <button onClick={() => loginHandler()}>Log in</button>
+                <button onClick={() => loginHandler()} disabled={loading.logInButton}>Log in</button>
             </div>
             <div>
                 <button>Log out</button>
