@@ -1,16 +1,42 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { User } from '../../models/User';
 import './MainPage.css';
+import { loginService } from '../../service/login.service';
 
 const MainPage = (): JSX.Element => {
 
     const [user, setUser] = useState<User>(new User(null, '', '', ''));
+    const [loggedInUser, setLoggedInUser] = useState<User | null>(null);
+    const [errorMessage, setErrorMessage] = useState<string>('');
+
+    useEffect(() => {
+        checkAndGetUser();
+    }, []);
+
+    const checkAndGetUser = (): void => {
+        const gettedUser = loginService.getUser();
+        if (gettedUser === null) {
+            setErrorMessage("Unexpected error happened");
+            return;
+        }
+        setLoggedInUser(gettedUser);
+    }
 
     const inputHandler = (event: React.ChangeEvent<HTMLInputElement>): void => {
         const { name, value } = event.target;
         let tmpUser: any = user;
         tmpUser[name] = value;
         setUser({ ...tmpUser });
+    }
+
+    const loginHandler = async (): Promise<void> => {
+        const response = await loginService.login(user);
+        if (!response) {
+            setErrorMessage("Invalid username or password");
+            return;
+        }
+        setErrorMessage('');
+        checkAndGetUser();
     }
 
     return (
@@ -24,11 +50,19 @@ const MainPage = (): JSX.Element => {
                 <input type="password" name='password' onChange={(event) => inputHandler(event)} value={user.password} placeholder='Password'></input>
             </div>
             <div>
-                <button>Log in</button>
+                <button onClick={() => loginHandler()}>Log in</button>
             </div>
             <div>
                 <button>Log out</button>
             </div>
+            {errorMessage &&
+                <div className='errorMessage'>{errorMessage}</div>
+            }
+            {loggedInUser &&
+                <div className='tokenShower'>
+                    {loggedInUser.token}
+                </div>
+            }
         </div>
     );
 

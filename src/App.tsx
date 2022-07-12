@@ -6,8 +6,8 @@ import MainPage from './components/main/MainPage';
 
 function App(): JSX.Element {
   return (
-    <div className="container">
-      <body>
+    <body>
+      <div className="container">
         <main>
           <BrowserRouter>
             <Routes>
@@ -15,8 +15,8 @@ function App(): JSX.Element {
             </Routes>
           </BrowserRouter>
         </main>
-      </body>
-    </div>
+      </div>
+    </body>
   );
 }
 
