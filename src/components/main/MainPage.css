@@ -1,0 +1,16 @@
+.loginForm {
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+}
+
+.usernameInput {
+    display: flex;
+    flex-direction: column;
+}
+
+.passwordInput {
+    display: flex;
+    flex-direction: column;
+}
