@@ -1,0 +1,18 @@
+.loginPage {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.loginInputs {
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+  justify-content: center;
+  width: 300px;
+}
+
+.loginInputField {
+  display: flex;
+  flex-direction: column;
+}

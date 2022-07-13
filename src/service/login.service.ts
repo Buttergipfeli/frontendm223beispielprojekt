@@ -1,11 +1,16 @@
 import { User } from "../models/User";
 import { Buffer } from "buffer";
+import { api } from "../constants/api";
+import { BehaviorSubject } from "rxjs";
 
-const API_URL = 'http://localhost:8081/login';
+const API_URL = api + '/login';
+
+const currentUserSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('m223-user') || ''));
 
 export const loginService = {
     login,
-    getUser
+    currentUser: currentUserSubject.asObservable(),
+    get currentUserValue() { return currentUserSubject.value },
 }
 
 async function login(user: User): Promise<boolean> {
@@ -23,12 +28,4 @@ async function login(user: User): Promise<boolean> {
         return true;
     }
     return false;
-}
-
-function getUser(): User | null {
-    const user = localStorage.getItem('m223-user');
-    if (user) {
-        return JSON.parse(user);
-    }
-    return null;
 }

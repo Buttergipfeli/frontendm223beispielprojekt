@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import { User } from '../../models/User';
 import './MainPage.css';
 import { loginService } from '../../service/login.service';
+import { Role } from '../../models/Role';
 
 const MainPage = (): JSX.Element => {
 
-    const [user, setUser] = useState<User>(new User(null, '', '', ''));
+    const [user, setUser] = useState<User>(new User(null, new Role(0, ''), '', '', ''));
     const [loading, setLoading] = useState<{ logInButton: boolean }>({ logInButton: false });
     const [loggedInUser, setLoggedInUser] = useState<User | null>(null);
     const [errorMessage, setErrorMessage] = useState<string>('');
@@ -15,7 +16,7 @@ const MainPage = (): JSX.Element => {
     }, []);
 
     const checkAndGetUser = (): void => {
-        const gettedUser = loginService.getUser();
+        const gettedUser = loginService.currentUserValue;
         if (gettedUser === null) {
             setErrorMessage("Unexpected error happened");
             return;
