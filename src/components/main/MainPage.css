@@ -10,8 +10,14 @@
   flex-direction: column;
 }
 
-.logoutText:hover {
+.navText {
+  color: blue;
+}
+
+.navText:hover {
   cursor: pointer;
+  color: aqua;
+  transition: 0.3s;
 }
 
 .mottoContents {

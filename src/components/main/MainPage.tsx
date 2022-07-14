@@ -19,7 +19,7 @@ const MainPage = (): JSX.Element => {
     const [motto, setMotto] = useState<Motto>(new Motto(
         null,
         new Category(null, ''),
-        new User(null, new Role(null, ''), '', '', ''),
+        new User(null, new Role(null, ''), '', '', '', null),
         '',
         null)
     );
@@ -73,18 +73,17 @@ const MainPage = (): JSX.Element => {
         if (savedMotto === null) {
             setErrorMessage('Error while creating motto');
         } else {
-            console.log('savedMotto', savedMotto);
+            setMottos(mottos => [...mottos, savedMotto]);
         }
         setLoading({ createMottoButton: false });
     }
 
     return (
         <div>
-            <h1>Hello {currentUser.username} -{'>'}
-                <small className='logoutText' onClick={() => loginService.logout()}> Logout</small>
-                <small> Login</small>
-                <small> User-management</small>
-                <small> All-User-management</small>
+            <h1>Hello {currentUser.username} CHF {currentUser.wallet} -{'>'}
+                <small className='navText' onClick={() => loginService.logout()}> Logout</small>
+                <small className='navText'> User-management</small>
+                <small className='navText'> All-User-management</small>
             </h1>
             <div className='mottoContents'>
                 <div className='mottoCreator'>

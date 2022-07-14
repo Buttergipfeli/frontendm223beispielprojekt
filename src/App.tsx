@@ -10,6 +10,7 @@ import { Roles } from './models/Roles';
 import { loginService } from './service/login.service';
 import jwtDecode from 'jwt-decode';
 import { clientUrl } from './constants/client';
+import UserManagement from './components/usermanagement/UserManagement';
 
 function App() {
 
@@ -30,6 +31,7 @@ function App() {
             <Routes>
               <Route path='/' element={<AuthGuard element={MainPage} roles={[Roles.USER, Roles.MODERATOR]} />}></Route>
               <Route path='/main' element={<AuthGuard element={MainPage} roles={[Roles.USER, Roles.MODERATOR]} />}></Route>
+              <Route path='/user-management' element={<AuthGuard element={UserManagement} roles={[Roles.USER, Roles.MODERATOR]} />}></Route>
               <Route path='/login' element={<LoginPage />}></Route>
               <Route path='/unauthorized' element={<Unauthorized />}></Route>
             </Routes>

@@ -7,7 +7,7 @@ import { clientUrl } from '../../constants/client';
 
 const LoginPage = (): JSX.Element => {
 
-    const [user, setUser] = useState<User>(new User(null, new Role(0, ''), '', '', ''));
+    const [user, setUser] = useState<User>(new User(null, new Role(0, ''), '', '', '', null));
     const [loading, setLoading] = useState<{ logInButton: boolean }>({ logInButton: false });
     const [errorMessage, setErrorMessage] = useState<string>('');
 

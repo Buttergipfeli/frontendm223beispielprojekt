@@ -1,6 +1,7 @@
 import { User } from "../models/User";
 import { Buffer } from "buffer";
 import { api } from "../constants/api";
+import { clientUrl } from "../constants/client";
 import { BehaviorSubject } from "rxjs";
 
 const API_URL = api + '/login';
@@ -34,4 +35,5 @@ async function login(user: User): Promise<boolean> {
 function logout() {
     localStorage.removeItem('m223-user');
     currentUserSubject.next(null);
+    window.location.href = clientUrl + '/login';
 }
