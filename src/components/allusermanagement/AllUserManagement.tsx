@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { clientUrl } from '../../constants/client';
+import { Role } from '../../models/Role';
 import { User } from '../../models/User';
 import { userService } from '../../service/user.service';
 import './AllUserManagement.css';
@@ -7,6 +8,7 @@ import './AllUserManagement.css';
 export default function AllUserManagement(): JSX.Element {
 
     const [users, setUsers] = useState<User[]>([]);
+    const [user, setUser] = useState<User>(new User(null, new Role(null, ''), '', '', '', null));
     const [errorMessage, setErrorMessage] = useState<string>('');
     const [successMessage, setSuccessMessage] = useState<string>('');
     const [loading, setLoading] = useState<{ updateUserButton: boolean }>({ updateUserButton: false });
@@ -106,9 +108,7 @@ export default function AllUserManagement(): JSX.Element {
                 }
             </div>
             <br></br>
-            <div>
-                <button onClick={() => gotToMain()}>Go to main page</button>
-            </div>
+            <button onClick={() => gotToMain()}>Go to main page</button>
         </div>
     )
 }
