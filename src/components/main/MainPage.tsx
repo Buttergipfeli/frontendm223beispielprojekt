@@ -1,72 +1,144 @@
-import { useEffect, useState } from 'react';
-import { User } from '../../models/User';
-import './MainPage.css';
-import { loginService } from '../../service/login.service';
+import React, { useEffect, useState } from 'react';
+import { Category } from '../../models/Category';
+import { Motto } from '../../models/Motto';
 import { Role } from '../../models/Role';
+import { User } from '../../models/User';
+import { categoryService } from '../../service/category.service';
+import { loginService } from '../../service/login.service';
+import { mottoService } from '../../service/motto.service';
+import './MainPage.css';
 
 const MainPage = (): JSX.Element => {
 
-    const [user, setUser] = useState<User>(new User(null, new Role(0, ''), '', '', ''));
-    const [loading, setLoading] = useState<{ logInButton: boolean }>({ logInButton: false });
-    const [loggedInUser, setLoggedInUser] = useState<User | null>(null);
+    const currentUser = loginService.currentUserValue;
+
     const [errorMessage, setErrorMessage] = useState<string>('');
+    const [loading, setLoading] = useState<{ createMottoButton: boolean }>({ createMottoButton: false });
+    const [categories, setCategories] = useState<Category[]>([]);
+    const [mottos, setMottos] = useState<Motto[]>([]);
+    const [motto, setMotto] = useState<Motto>(new Motto(
+        null,
+        new Category(null, ''),
+        new User(null, new Role(null, ''), '', '', ''),
+        '',
+        null)
+    );
 
     useEffect(() => {
-        checkAndGetUser();
-    }, []);
+        getAllCategories();
+        getAllMottos();
+    }, [])
 
-    const checkAndGetUser = (): void => {
-        const gettedUser = loginService.currentUserValue;
-        if (gettedUser === null) {
-            setErrorMessage("Unexpected error happened");
+    const getAllMottos = async (): Promise<void> => {
+        const allMottos = await mottoService.getAllMottos();
+        if (allMottos === null) {
+            setErrorMessage('Error while getting all mottos');
             return;
         }
-        setLoggedInUser(gettedUser);
+        setMottos(allMottos);
     }
 
-    const inputHandler = (event: React.ChangeEvent<HTMLInputElement>): void => {
-        const { name, value } = event.target;
-        let tmpUser: any = user;
-        tmpUser[name] = value;
-        setUser({ ...tmpUser });
-    }
-
-    const loginHandler = async (): Promise<void> => {
-        setLoading({ logInButton: true });
-        const response = await loginService.login(user);
-        if (!response) {
-            setErrorMessage("Invalid username or password");
-        } else {
-            setErrorMessage('');
-            checkAndGetUser();
+    const getAllCategories = async (): Promise<void> => {
+        const response: Category[] | null = await categoryService.getCategories();
+        if (response === null) {
+            setErrorMessage('Error while getting categories');
+            return;
         }
-        setLoading({ logInButton: false });
+        setCategories(response);
+    }
+
+    const inputHandler = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const { name, value } = event.target;
+        if (name === 'category') {
+            let tmpMotto = motto;
+            tmpMotto.categoryfk.id = Number(value);
+            setMotto({ ...tmpMotto });
+            return;
+        }
+        setMotto({ ...motto, [name]: value });
+    }
+
+    const createMotto = async (): Promise<void> => {
+        setLoading({ createMottoButton: true });
+        if (motto.motto.length < 1) {
+            setErrorMessage('Motto is required');
+        } else if (motto.categoryfk.id === null || motto.categoryfk.id === -1) {
+            setErrorMessage('Category is required');
+        } else if (motto.price === null) {
+            setErrorMessage('Price is required');
+        } else if (motto.price < 1 || (motto.price * 10) % 10 !== 0) {
+            setErrorMessage('Price must be greater than 0 and can\'t be in decimal');
+        }
+        const savedMotto: Motto | null = await mottoService.createMotto(motto);
+        if (savedMotto === null) {
+            setErrorMessage('Error while creating motto');
+        } else {
+            console.log('savedMotto', savedMotto);
+        }
+        setLoading({ createMottoButton: false });
     }
 
     return (
-        <div className='loginForm'>
-            <div className="usernameInput">
-                <label>Username</label>
-                <input type="text" name='username' onChange={(event) => inputHandler(event)} value={user.username} placeholder='Username'></input>
-            </div>
-            <div className='passwordInput'>
-                <label>Password</label>
-                <input type="password" name='password' onChange={(event) => inputHandler(event)} value={user.password} placeholder='Password'></input>
-            </div>
-            <div>
-                <button onClick={() => loginHandler()} disabled={loading.logInButton}>Log in</button>
-            </div>
-            <div>
-                <button>Log out</button>
-            </div>
-            {errorMessage &&
-                <div className='errorMessage'>{errorMessage}</div>
-            }
-            {loggedInUser &&
-                <div className='tokenShower'>
-                    {loggedInUser.token}
+        <div>
+            <h1>Hello {currentUser.username} -{'>'}
+                <small className='logoutText' onClick={() => loginService.logout()}> Logout</small>
+                <small> Login</small>
+                <small> User-management</small>
+                <small> All-User-management</small>
+            </h1>
+            <div className='mottoContents'>
+                <div className='mottoCreator'>
+                    <div className='mottoCreatorInputs'>
+                        <div className='mottoInputField'>
+                            <label>Motto</label>
+                            <input type='text' onChange={(event) => inputHandler(event)} name='motto' value={motto.motto} />
+                        </div>
+                        <div className='mottoInputField'>
+                            <label>Category</label>
+                            <select name='category' onChange={(event) => inputHandler(event)}>
+                                <option value={-1}>Select category</option>
+                                {
+                                    categories.map((category, index) =>
+                                        <option key={index} value={category.id || ''}>{category.category}</option>)
+                                }
+                            </select>
+                        </div>
+                        <div className='mottoInputField'>
+                            <label>Price</label>
+                            <input type='number' onChange={(event) => inputHandler(event)} name='price' value={motto.price || ''} />
+                        </div>
+                        {errorMessage &&
+                            <div className='errorMessage'>{errorMessage}</div>
+                        }
+                        <button disabled={loading.createMottoButton} onClick={() => createMotto()}>Create Motto</button>
+                    </div>
                 </div>
-            }
+
+                <div className='mottoDisplayer'>
+                    <table className='mottoDisplayerTable'>
+                        <thead>
+                            <td>ID</td>
+                            <td>Motto</td>
+                            <td>Category</td>
+                            <td>Username</td>
+                            <td>Price</td>
+                            <td>Buy</td>
+                        </thead>
+                        <tbody>
+                            {mottos.map((motto, index) =>
+                                <tr key={index} className='motto'>
+                                    <td>{motto.id}</td>
+                                    <td>{motto.motto}</td>
+                                    <td>{motto.categoryfk.category}</td>
+                                    <td>{motto.ownerfk.username}</td>
+                                    <td>{motto.price}</td>
+                                    <td><button>Buy</button></td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
+                </div>
+            </div >
         </div>
     );
 

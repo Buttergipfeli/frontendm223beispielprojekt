@@ -1,20 +1,38 @@
-.loginForm {
-    width: 300px;
-    display: flex;
-    flex-direction: column;
-    row-gap: 10px;
+.mottoCreatorInputs {
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
 }
 
-.usernameInput {
-    display: flex;
-    flex-direction: column;
+.mottoInputField {
+  display: flex;
+  flex-direction: column;
 }
 
-.passwordInput {
-    display: flex;
-    flex-direction: column;
+.logoutText:hover {
+  cursor: pointer;
 }
 
-.tokenShower {
-    color: green;
+.mottoContents {
+  display: flex;
+  column-gap: 50px;
+}
+
+.mottoDisplayerTable {
+  border-collapse: collapse;
+}
+
+.mottoDisplayerTable button {
+  width: 100%;
+  background-color: greenyellow;
+}
+
+.mottoDisplayerTable thead {
+  font-weight: 500;
+}
+
+.mottoDisplayerTable td {
+  width: 150px;
+  border: 1px solid black;
 }

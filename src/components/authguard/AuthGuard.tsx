@@ -2,15 +2,14 @@ import { loginService } from '../../service/login.service';
 import { Navigate } from 'react-router-dom';
 
 type Props = {
-    element: any,
-    roles: string[]
+    element: () => JSX.Element,
+    roles?: string[]
 }
 
 function AuthGuard(props: Props): JSX.Element {
 
     const { element: Component, roles } = props;
     const currentUser = loginService.currentUserValue;
-    console.log(currentUser);
 
     if (!currentUser) {
         return <Navigate to='/login' />;

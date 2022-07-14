@@ -5,12 +5,13 @@ import { BehaviorSubject } from "rxjs";
 
 const API_URL = api + '/login';
 
-const currentUserSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('m223-user') || ''));
+const currentUserSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('m223-user') || 'null'));
 
 export const loginService = {
     login,
+    logout,
     currentUser: currentUserSubject.asObservable(),
-    get currentUserValue() { return currentUserSubject.value },
+    get currentUserValue(): User { return currentUserSubject.value },
 }
 
 async function login(user: User): Promise<boolean> {
@@ -28,4 +29,9 @@ async function login(user: User): Promise<boolean> {
         return true;
     }
     return false;
+}
+
+function logout() {
+    localStorage.removeItem('m223-user');
+    currentUserSubject.next(null);
 }

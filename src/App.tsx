@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
@@ -8,8 +8,19 @@ import AuthGuard from './components/authguard/AuthGuard';
 import Unauthorized from './components/unauthorized/Unauthorized';
 import { Roles } from './models/Roles';
 import { loginService } from './service/login.service';
+import jwtDecode from 'jwt-decode';
+import { clientUrl } from './constants/client';
 
-function App(): JSX.Element {
+function App() {
+
+  useEffect(() => {
+    if (loginService.currentUserValue) {
+      if (jwtDecode<any>(loginService.currentUserValue.token).exp < (new Date().getTime)) {
+        loginService.logout();
+        window.location.href = clientUrl + '/login';
+      }
+    }
+  }, []);
 
   return (
     <body>
@@ -17,8 +28,8 @@ function App(): JSX.Element {
         <main>
           <BrowserRouter>
             <Routes>
-              <Route path='/' element={<AuthGuard element={<MainPage />} roles={[Roles.USER, Roles.MODERATOR]} />}></Route>
-              <Route path='/main' element={<AuthGuard element={<MainPage />} roles={[Roles.USER, Roles.MODERATOR]} />}></Route>
+              <Route path='/' element={<AuthGuard element={MainPage} roles={[Roles.USER, Roles.MODERATOR]} />}></Route>
+              <Route path='/main' element={<AuthGuard element={MainPage} roles={[Roles.USER, Roles.MODERATOR]} />}></Route>
               <Route path='/login' element={<LoginPage />}></Route>
               <Route path='/unauthorized' element={<Unauthorized />}></Route>
             </Routes>

@@ -2,13 +2,13 @@ import { Category } from "./Category";
 import { User } from "./User";
 
 export class Motto {
-    id: number;
+    id: number | null;
     categoryfk: Category;
     ownerfk: User;
     motto: string;
-    price: number;
+    price: number | null;
 
-    constructor(id: number, categoryfk: Category, ownerfk: User, motto: string, price: number) {
+    constructor(id: number | null, categoryfk: Category, ownerfk: User, motto: string, price: number | null) {
         this.id = id;
         this.categoryfk = categoryfk;
         this.ownerfk = ownerfk;

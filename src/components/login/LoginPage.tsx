@@ -25,9 +25,9 @@ const LoginPage = (): JSX.Element => {
             setErrorMessage("Invalid username or password");
         } else {
             setErrorMessage('');
+            window.location.href = clientUrl + "/";
         }
         setLoading({ logInButton: false });
-        window.location.href = clientUrl + "/";
     }
 
     return (
