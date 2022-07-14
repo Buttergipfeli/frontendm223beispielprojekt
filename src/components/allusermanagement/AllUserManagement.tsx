@@ -15,6 +15,16 @@ export default function AllUserManagement(): JSX.Element {
         getAllUsers();
     }, []);
 
+    const deleteUserHandler = async (id: number): Promise<void> => {
+        const user = await userService.deleteUserById(id);
+        if (user === null) {
+            setErrorMessage('Could not delete user');
+            return
+        }
+        setErrorMessage("");
+        setUsers(users.filter(u => u.id !== id));
+    }
+
     const getAllUsers = async (): Promise<void> => {
         const gettedUsers = await userService.getAllUsers();
         if (gettedUsers === null) {
@@ -67,6 +77,7 @@ export default function AllUserManagement(): JSX.Element {
                     <td>Wallet</td>
                     <td>Password</td>
                     <td>Update</td>
+                    <td>Delete</td>
                 </thead>
                 <tbody>
                     {users.length > 0 &&
@@ -79,6 +90,7 @@ export default function AllUserManagement(): JSX.Element {
                                     <td>{user.wallet}</td>
                                     <td><input type='text' name='password' value={user.password} onChange={(event) => inputHandler(event, index)} /></td>
                                     <td><button onClick={() => updateUserHandler(index)} disabled={loading.updateUserButton}>Update</button></td>
+                                    <td><button onClick={() => deleteUserHandler(user.id || -1)} disabled={loading.updateUserButton}>Delete</button></td>
                                 </tr>
                             )
                         })

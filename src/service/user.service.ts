@@ -9,7 +9,8 @@ export const userService = {
     updatePassword,
     getAllUsers,
     updateWallet,
-    findUserById
+    findUserById,
+    deleteUserById
 }
 
 let token;
@@ -63,7 +64,6 @@ async function findUserById(id: number): Promise<User | null> {
         method: 'GET',
         headers: headers
     });
-    console.log(response.status);
     if (!response.ok) {
         return null;
     }
@@ -73,8 +73,18 @@ async function findUserById(id: number): Promise<User | null> {
 
 function updateWallet(newWallet: number): void {
     let user = loginService.currentUserValue;
-    console.log("Wallet", newWallet);
     user.wallet = newWallet;
-    console.log(user);
     localStorage.setItem('m223-user', JSON.stringify(user));
+}
+
+async function deleteUserById(id: number): Promise<User | null> {
+    const response = await fetch(API_URL + '/' + id, {
+        method: 'DELETE',
+        headers: headers
+    });
+    if (!response.ok) {
+        return null;
+    }
+    const data = await response.json();
+    return data;
 }

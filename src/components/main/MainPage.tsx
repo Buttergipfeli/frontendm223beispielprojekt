@@ -151,9 +151,6 @@ const MainPage = (): JSX.Element => {
                             <td>Owner</td>
                             <td>Price</td>
                             <td>Buy</td>
-                            {currentUser.rolefk.role === "MODERATOR" &&
-                                <td>Delete</td>
-                            }
                         </thead>
                         <tbody>
                             {mottos.map((motto, index) =>
@@ -164,9 +161,6 @@ const MainPage = (): JSX.Element => {
                                     <td>{motto.ownerfk.username}</td>
                                     <td>{motto.price}</td>
                                     <td><button onClick={() => purchaseHandler(motto.id || -1, index)} disabled={loading.createMottoButton}>Buy</button></td>
-                                    {currentUser.rolefk.role === "MODERATOR" &&
-                                        <td><button className='deleteMottoButton' disabled={loading.createMottoButton}>Delete</button></td>
-                                    }
                                 </tr>
                             )}
                         </tbody>
