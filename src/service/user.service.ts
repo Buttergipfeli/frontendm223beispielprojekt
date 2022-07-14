@@ -6,7 +6,8 @@ const API_URL = api + '/users';
 
 export const userService = {
     getUserById,
-    updatePassword
+    updatePassword,
+    getAllUsers
 }
 
 let token;
@@ -40,5 +41,17 @@ async function updatePassword(user: User): Promise<User | null> {
         return null;
     }
     const data = await response.json();
+    return data;
+}
+
+async function getAllUsers(): Promise<User[] | null> {
+    const response = await fetch(API_URL, {
+        method: 'GET',
+        headers: headers
+    });
+    if (!response.ok) {
+        return null;
+    }
+    const data: User[] = await response.json();
     return data;
 }

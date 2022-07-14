@@ -88,7 +88,9 @@ const MainPage = (): JSX.Element => {
         <div>
             <h1>Hello {currentUser.username} CHF {currentUser.wallet} -{'>'}
                 <small className='navText' onClick={() => loginService.logout()}> Logout</small>
+                <small className='navBreak'> |</small>
                 <small className='navText' onClick={() => navHandler('user-management')}> User-management</small>
+                <small className='navBreak'> |</small>
                 <small className='navText' onClick={() => navHandler('all-user-management')}> All-User-management</small>
             </h1>
             <div className='mottoContents'>
@@ -125,7 +127,7 @@ const MainPage = (): JSX.Element => {
                             <td>ID</td>
                             <td>Motto</td>
                             <td>Category</td>
-                            <td>Username</td>
+                            <td>Owner</td>
                             <td>Price</td>
                             <td>Buy</td>
                         </thead>

@@ -44,8 +44,6 @@ export default function UserManagement(): JSX.Element {
             } else {
                 setErrorMessage("");
                 setSuccessMessage("User updated successfully");
-                updatedUser.password = '';
-                setUser(updatedUser);
             }
         } else {
             setErrorMessage("Username cannot be empty");
@@ -63,6 +61,7 @@ export default function UserManagement(): JSX.Element {
                 <thead>
                     <td>ID</td>
                     <td>Username</td>
+                    <td>Role</td>
                     <td>Wallet</td>
                     <td>Password</td>
                     <td>Update</td>
@@ -71,6 +70,7 @@ export default function UserManagement(): JSX.Element {
                     <tr>
                         <td>{user.id}</td>
                         <td>{user.username}</td>
+                        <td>{user.rolefk.role}</td>
                         <td>CHF {user.wallet}</td>
                         <td><input onChange={(event) => inputHandler(event)} value={user.password} name="password" /></td>
                         <td><button disabled={loading.updateUserButton} onClick={() => updateUserHandler()}>Update</button></td>

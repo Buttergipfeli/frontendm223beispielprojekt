@@ -3,14 +3,16 @@ import { clientUrl } from "../../constants/client"
 
 export default function Unauthorized(): JSX.Element {
 
-    const forewarder = (): void => {
-        window.location.href = clientUrl + "/login";
+    const forewarder = (url: string): void => {
+        window.location.href = clientUrl + url;
     }
+
     return (
         <div>
             <h1>Unauthorized</h1>
             <p>Watch if you have the correct role!</p>
-            <button onClick={() => forewarder()}>Login</button>
+            <button onClick={() => forewarder("/login")}>Login</button>
+            <button onClick={() => forewarder("/")}>Main Page</button>
         </div>
     );
 }
