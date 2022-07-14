@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { clientUrl } from '../../constants/client';
 import { Category } from '../../models/Category';
 import { Motto } from '../../models/Motto';
 import { Role } from '../../models/Role';
@@ -78,12 +79,17 @@ const MainPage = (): JSX.Element => {
         setLoading({ createMottoButton: false });
     }
 
+    const navHandler = (url: string): void => {
+        window.location.href = clientUrl + '/' + url;
+    }
+
+
     return (
         <div>
             <h1>Hello {currentUser.username} CHF {currentUser.wallet} -{'>'}
                 <small className='navText' onClick={() => loginService.logout()}> Logout</small>
-                <small className='navText'> User-management</small>
-                <small className='navText'> All-User-management</small>
+                <small className='navText' onClick={() => navHandler('user-management')}> User-management</small>
+                <small className='navText' onClick={() => navHandler('all-user-management')}> All-User-management</small>
             </h1>
             <div className='mottoContents'>
                 <div className='mottoCreator'>

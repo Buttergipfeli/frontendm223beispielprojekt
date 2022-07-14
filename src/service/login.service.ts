@@ -12,7 +12,7 @@ export const loginService = {
     login,
     logout,
     currentUser: currentUserSubject.asObservable(),
-    get currentUserValue(): User { return currentUserSubject.value },
+    get currentUserValue(): User { return currentUserSubject.value }
 }
 
 async function login(user: User): Promise<boolean> {

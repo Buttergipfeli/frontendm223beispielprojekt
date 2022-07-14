@@ -1,3 +1,12 @@
+.userManagementTable {
+  border-collapse: collapse;
+}
+
 .userManagementTable thead {
-    font-weight: 500;
+  font-weight: 500;
+}
+
+.userManagementTable td {
+  border: 1px solid black;
+  width: 300px;
 }
