@@ -46,3 +46,7 @@
   width: 150px;
   border: 1px solid black;
 }
+
+.deleteMottoButton {
+  background-color: red !important;
+}

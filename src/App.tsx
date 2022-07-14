@@ -12,6 +12,7 @@ import jwtDecode from 'jwt-decode';
 import { clientUrl } from './constants/client';
 import UserManagement from './components/usermanagement/UserManagement';
 import AllUserManagement from './components/allusermanagement/AllUserManagement';
+import { userService } from './service/user.service';
 
 function App() {
 
@@ -22,7 +23,17 @@ function App() {
         window.location.href = clientUrl + '/login';
       }
     }
+    updateWallet();
   }, []);
+
+  const updateWallet = async (): Promise<void> => {
+    const user = await userService.findUserById(loginService.currentUserValue.id || -1);
+    if (user === null) {
+      return;
+    }
+    const wallet = user.wallet;
+    userService.updateWallet(wallet || -1);
+  }
 
   return (
     <body>

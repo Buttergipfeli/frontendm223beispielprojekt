@@ -3,10 +3,13 @@ import { clientUrl } from '../../constants/client';
 import { Category } from '../../models/Category';
 import { Motto } from '../../models/Motto';
 import { Role } from '../../models/Role';
+import { MottoPurchaseBody } from '../../models/submodels/MottoPurchaseBody';
 import { User } from '../../models/User';
 import { categoryService } from '../../service/category.service';
 import { loginService } from '../../service/login.service';
 import { mottoService } from '../../service/motto.service';
+import { mottoPurchaseService } from '../../service/mottopurchase.service';
+import { userService } from '../../service/user.service';
 import './MainPage.css';
 
 const MainPage = (): JSX.Element => {
@@ -28,7 +31,7 @@ const MainPage = (): JSX.Element => {
     useEffect(() => {
         getAllCategories();
         getAllMottos();
-    }, [])
+    }, []);
 
     const getAllMottos = async (): Promise<void> => {
         const allMottos = await mottoService.getAllMottos();
@@ -75,6 +78,24 @@ const MainPage = (): JSX.Element => {
             setErrorMessage('Error while creating motto');
         } else {
             setMottos(mottos => [...mottos, savedMotto]);
+        }
+        setLoading({ createMottoButton: false });
+    }
+
+    const purchaseHandler = async (mottoId: number, mottoIndex: number): Promise<void> => {
+        setLoading({ createMottoButton: true });
+        if (mottos[mottoIndex].ownerfk.id !== currentUser.id) {
+            const mottoPurchaseBody = new MottoPurchaseBody(mottoId);
+            const mottoPurchase = await mottoPurchaseService.purchaseMotto(mottoPurchaseBody);
+            if (typeof mottoPurchase === 'string') {
+                setErrorMessage(mottoPurchase);
+            } else {
+                userService.updateWallet(mottoPurchase.wallet);
+                getAllMottos();
+                setErrorMessage("");
+            }
+        } else {
+            setErrorMessage("Can't purchase your own motto");
         }
         setLoading({ createMottoButton: false });
     }
@@ -130,6 +151,9 @@ const MainPage = (): JSX.Element => {
                             <td>Owner</td>
                             <td>Price</td>
                             <td>Buy</td>
+                            {currentUser.rolefk.role === "MODERATOR" &&
+                                <td>Delete</td>
+                            }
                         </thead>
                         <tbody>
                             {mottos.map((motto, index) =>
@@ -139,7 +163,10 @@ const MainPage = (): JSX.Element => {
                                     <td>{motto.categoryfk.category}</td>
                                     <td>{motto.ownerfk.username}</td>
                                     <td>{motto.price}</td>
-                                    <td><button>Buy</button></td>
+                                    <td><button onClick={() => purchaseHandler(motto.id || -1, index)} disabled={loading.createMottoButton}>Buy</button></td>
+                                    {currentUser.rolefk.role === "MODERATOR" &&
+                                        <td><button className='deleteMottoButton' disabled={loading.createMottoButton}>Delete</button></td>
+                                    }
                                 </tr>
                             )}
                         </tbody>

@@ -7,7 +7,9 @@ const API_URL = api + '/users';
 export const userService = {
     getUserById,
     updatePassword,
-    getAllUsers
+    getAllUsers,
+    updateWallet,
+    findUserById
 }
 
 let token;
@@ -54,4 +56,25 @@ async function getAllUsers(): Promise<User[] | null> {
     }
     const data: User[] = await response.json();
     return data;
+}
+
+async function findUserById(id: number): Promise<User | null> {
+    const response = await fetch(API_URL + '/' + id, {
+        method: 'GET',
+        headers: headers
+    });
+    console.log(response.status);
+    if (!response.ok) {
+        return null;
+    }
+    const data: User = await response.json();
+    return data;
+}
+
+function updateWallet(newWallet: number): void {
+    let user = loginService.currentUserValue;
+    console.log("Wallet", newWallet);
+    user.wallet = newWallet;
+    console.log(user);
+    localStorage.setItem('m223-user', JSON.stringify(user));
 }
