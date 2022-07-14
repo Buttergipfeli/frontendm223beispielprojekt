@@ -35,7 +35,7 @@ async function getUserById(id: number): Promise<User | null> {
 }
 
 async function updatePassword(user: User): Promise<User | null> {
-    const response = await fetch(API_URL, {
+    const response = await fetch(API_URL + "/" + user.id, {
         method: 'PUT',
         body: JSON.stringify(user),
         headers: headers
