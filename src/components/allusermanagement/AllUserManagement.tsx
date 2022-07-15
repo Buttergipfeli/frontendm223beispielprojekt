@@ -2,11 +2,13 @@ import { useEffect, useState } from 'react';
 import { clientUrl } from '../../constants/client';
 import { Role } from '../../models/Role';
 import { User } from '../../models/User';
+import { loginService } from '../../service/login.service';
 import { userService } from '../../service/user.service';
 import './AllUserManagement.css';
 
 export default function AllUserManagement(): JSX.Element {
 
+    const currentUser: User = loginService.currentUserValue;
     const [users, setUsers] = useState<User[]>([]);
     const [user, setUser] = useState<User>(new User(null, new Role(null, ''), '', '', '', null));
     const [errorMessage, setErrorMessage] = useState<string>('');
@@ -22,6 +24,9 @@ export default function AllUserManagement(): JSX.Element {
         if (user === null) {
             setErrorMessage('Could not delete user');
             return
+        }
+        if (user.id === currentUser.id) {
+            loginService.logout();
         }
         setErrorMessage("");
         setUsers(users.filter(u => u.id !== id));
