@@ -18,7 +18,7 @@ function App() {
 
   useEffect(() => {
     if (loginService.currentUserValue) {
-      if (jwtDecode<any>(loginService.currentUserValue.token).exp < (new Date().getTime)) {
+      if ((jwtDecode<any>(loginService.currentUserValue.token).exp * 1000) < (new Date().getTime())) {
         loginService.logout();
         window.location.href = clientUrl + '/login';
       }
