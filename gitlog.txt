@@ -1,0 +1,83 @@
+commit e432ab481ecb6aab8da93ad19b20530509562430
+Author: Buttergipfeli <77845220+Buttergipfeli@users.noreply.github.com>
+Date:   Fri Jul 15 15:09:17 2022 +0200
+
+    you will now get automatically logged of if your jwt expires
+
+commit c4e0834ae8afc89132d25a6b1dadd23eb27a6283
+Author: Buttergipfeli <77845220+Buttergipfeli@users.noreply.github.com>
+Date:   Fri Jul 15 14:05:14 2022 +0200
+
+    if you now delete your current logged in user then you will get automatically logged out
+
+commit 4180516e651403088e874af37f346715bcbba5aa
+Author: Buttergipfeli <77845220+Buttergipfeli@users.noreply.github.com>
+Date:   Thu Jul 14 22:11:28 2022 +0200
+
+    removed create user because h2 cant save but it can update users? It says password is null, even when i set it hardcoded
+
+commit f6f9cab5c187d8d280e77bdbf0d228661a9bb328
+Author: Buttergipfeli <77845220+Buttergipfeli@users.noreply.github.com>
+Date:   Thu Jul 14 19:54:54 2022 +0200
+
+    changed put for password change to pathvariable
+
+commit 8dd1e005b5cb8b1e9e23cd4d16ba2246cac16e3c
+Author: Buttergipfeli <77845220+Buttergipfeli@users.noreply.github.com>
+Date:   Thu Jul 14 16:32:49 2022 +0200
+
+    you can now delete users as a moderator
+
+commit 1b9f5e05da9f62fe3f13d987101db34bfe11cbef
+Author: Buttergipfeli <77845220+Buttergipfeli@users.noreply.github.com>
+Date:   Thu Jul 14 15:58:36 2022 +0200
+
+    you can now purchase Mottos
+
+commit 5ce4599b34cf9c19b18e00912153dc937b149bb2
+Author: Buttergipfeli <77845220+Buttergipfeli@users.noreply.github.com>
+Date:   Thu Jul 14 13:18:22 2022 +0200
+
+    moderator can now change the password of all users and he can also see every user.
+
+commit f034f1f3758800e6748dc8ddfb89c9c69873e84d
+Author: Buttergipfeli <77845220+Buttergipfeli@users.noreply.github.com>
+Date:   Thu Jul 14 11:25:41 2022 +0200
+
+    you can now update the password of your logged in user
+
+commit 68f9ed34db16c22fccfd2045e1dd2ca6d7762dd9
+Author: Buttergipfeli <77845220+Buttergipfeli@users.noreply.github.com>
+Date:   Thu Jul 14 09:30:44 2022 +0200
+
+    all mottos will now be displayed
+
+commit 5fb9fde7234f85c9523714dd3664f763890152cc
+Author: Buttergipfeli <77845220+Buttergipfeli@users.noreply.github.com>
+Date:   Thu Jul 14 09:06:32 2022 +0200
+
+    mottos can now be created and listed
+
+commit f5ea566560996d6a936966a7e451eeeb81259b84
+Author: Buttergipfeli <77845220+Buttergipfeli@users.noreply.github.com>
+Date:   Wed Jul 13 18:52:33 2022 +0200
+
+    login added
+
+commit dfb7e6481d2beef479c26a675e3ebbd379f814f9
+Author: Buttergipfeli <77845220+Buttergipfeli@users.noreply.github.com>
+Date:   Tue Jul 12 21:38:16 2022 +0200
+
+    log in gets disabled on login click
+
+commit fdfc4427eedefa9c167755e6f5365c1dd35b75bf
+Author: Buttergipfeli <77845220+Buttergipfeli@users.noreply.github.com>
+Date:   Tue Jul 12 20:08:05 2022 +0200
+
+    you can now log in and the token will be displayed
+
+commit 651044ffa2381a43636bc4224aef78738ed6059b
+Author: Buttergipfeli <77845220+Buttergipfeli@users.noreply.github.com>
+Date:   Tue Jul 12 19:05:50 2022 +0200
+
+    initial commit
